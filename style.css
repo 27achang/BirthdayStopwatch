@@ -1,0 +1,20 @@
+body {
+    display: flex;
+    justify-content: center;
+    height: calc(100vh - 16px);
+    flex-wrap: wrap;
+    transition: background-color 0.15s;
+    cursor: pointer;
+}
+
+h1 {
+    font-family: monospace;
+    font-size: 10em;
+    align-self: center;
+}
+
+div {
+    position: absolute;
+    top: calc(50% + 5em);
+    left: calc(50% - 25px);
+}
