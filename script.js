@@ -1,23 +1,22 @@
 var running = false;
-var pre_pause_milsecs = 0;
-var minutes = 0;
-var seconds = 0;
-var milliseconds = 0;
-var start_time = null;
+var pre_pause_milsecs = 0; // Milliseconds from initial start to most recent pause
+var minutes = 0; // Since last start
+var seconds = 0; // Since last start
+var start_time = null; // The most recent start time after a pause, not the initial start time
 var stop_time = null;
-var reset_hold = false;
 var update_interval;
 var clear_background_interval;
 
+// This acts as the start AND the resume function
 function start() {
-    if (reset_hold) {
-        reset_hold = false;
-        return;
-    }
     if (start_time == null) document.querySelector("button").removeAttribute("disabled");
     start_time = new Date();
     running = true;
-    update_interval = setInterval(updateStopwatch, 1005);
+    var first_update_interval = setInterval(() => {
+        updateStopwatch();
+        clearInterval(first_update_interval);
+        update_interval = setInterval(updateStopwatch, 1000);
+    }, 1000 - pre_pause_milsecs % 1000);
     document.querySelector("body").style.backgroundColor = "rgba(0, 255, 0, 0.3)";
     clear_background_interval = setInterval(clearBackground, 50);
 }
@@ -42,7 +41,6 @@ function toggleRun() {
 }
 
 function reset() {
-    reset_hold = true;
     start_time = stop_time = null;
     pre_pause_milsecs = minutes = seconds = 0;
     if (running) clearInterval(update_interval);
@@ -78,6 +76,10 @@ function updateStopwatch() {
 
 window.onload = (e) => {
     document.querySelector("div").style.left = "calc(50% - " + document.querySelector("div").offsetWidth / 2 + "px";
+    document.body.addEventListener("click", (e) => {
+        if(e.target.tagName == "BUTTON") console.log("Pressed button");
+        else toggleRun();
+    });
 }
 
 /*
