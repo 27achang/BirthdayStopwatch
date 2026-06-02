@@ -6,6 +6,7 @@ var start_time = null; // The most recent start time after a pause, not the init
 var stop_time = null;
 var update_interval;
 var clear_background_interval;
+var disabled = false;
 
 // This acts as the start AND the resume function
 function start() {
@@ -36,17 +37,29 @@ function pause() {
 }
 
 function toggleRun() {
+    if (disabled) return;
+    disabled = true;
     if (running) pause();
     else start();
+    disabled = false;
 }
 
-function reset() {
+async function reset() {
+    if (disabled) return;
+    disabled = true;
+    await pause();
+    if (!(window.confirm("Are you sure you want to reset the stopwatch? This cannot be undone."))) {
+        start();
+        disabled = false;
+        return;
+    }
     start_time = stop_time = null;
     pre_pause_milsecs = minutes = seconds = 0;
     if (running) clearInterval(update_interval);
     running = false;
     document.querySelector("h1").textContent = "0:00";
     document.querySelector("button").setAttribute("disabled", "true");
+    disabled = false;
 }
 
 function updateStopwatch() {
@@ -77,8 +90,7 @@ function updateStopwatch() {
 window.onload = (e) => {
     document.querySelector("div").style.left = "calc(50% - " + document.querySelector("div").offsetWidth / 2 + "px";
     document.body.addEventListener("click", (e) => {
-        if(e.target.tagName == "BUTTON") console.log("Pressed button");
-        else toggleRun();
+        if(e.target.tagName !== "BUTTON") toggleRun();
     });
 }
 
