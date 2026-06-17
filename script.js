@@ -71,6 +71,7 @@ function updateStopwatch() {
     document.querySelector("h1").textContent = minutes + ":" + (seconds.toString().length == 1 ? "0" + seconds.toString() : seconds);
     */
     let ms = Date.now() - start_time.getTime() + pre_pause_milsecs;
+    let reached_end;
     if (Math.trunc(ms / 60000) <= 60) {
         ms -= ms % 1000;
         minutes = Math.trunc(ms / 60000);
@@ -79,16 +80,18 @@ function updateStopwatch() {
         ms -= ms % 1000;
         minutes = Math.trunc(ms / 60000) - 1;
         seconds = (ms - minutes * 60000) / 1000;
+        if (minutes = new Date().getFullYear() - 1970) reached_end = true;
     } else {
         ms -= ms % 1000;
         minutes = Math.trunc(ms / 60000);
         seconds = (ms - minutes * 60000) / 1000;
     }
     document.querySelector("h1").textContent =  minutes + ":" + (seconds < 10 ? "0" + seconds.toString() : seconds);
+    if (reached_end) pause();
 }
 
 window.onload = (e) => {
-    document.querySelector("div").style.left = "calc(50% - " + document.querySelector("div").offsetWidth / 2 + "px";
+    document.querySelector("button").style.left = "calc(50% - " + document.querySelector("button").offsetWidth / 2 + "px";
     document.body.addEventListener("click", (e) => {
         if(e.target.tagName !== "BUTTON") toggleRun();
     });
