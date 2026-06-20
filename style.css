@@ -15,6 +15,6 @@ h1 {
 
 button {
     position: absolute;
-    top: calc(50% + 5em);
+    bottom: 10%;
     left: calc(50% - 25px);
 }
