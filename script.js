@@ -80,7 +80,7 @@ function updateStopwatch() {
         ms -= ms % 1000;
         minutes = Math.trunc(ms / 60000) - 1;
         seconds = (ms - minutes * 60000) / 1000;
-        if (minutes = new Date().getFullYear() - 1970) reached_end = true;
+        if (minutes == new Date().getFullYear() - 1970) reached_end = true;
     } else {
         ms -= ms % 1000;
         minutes = Math.trunc(ms / 60000);
